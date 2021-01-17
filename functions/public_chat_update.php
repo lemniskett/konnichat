@@ -12,7 +12,11 @@ function reportResult($whatToReport) {
     }
 }
 
-$username   = $_SESSION['username'];
+if(! $username = $_SESSION['username']) {
+    echo json_encode(array('code' => 403, 'status' => 'Forbidden'));
+    die();
+}
+
 $message    = $_POST['message'];
 
 if(trim($message) == ''){

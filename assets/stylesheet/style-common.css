@@ -106,6 +106,7 @@ body {
     padding: 16px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(16px);
+    transition: 250ms;
 }
 
 textarea, input, button {

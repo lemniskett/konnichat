@@ -2,7 +2,10 @@
 session_start();
 include 'koneksi.php';
 
-$username   = $_SESSION['username'];
+if(! $username = $_SESSION['username']) {
+    echo json_encode(array('code' => 403, 'status' => 'Forbidden'));
+    die();
+}
 
 $prepare    = $mysql->prepare(
     'SELECT username,fullname,status FROM tbUsername WHERE username=?'
@@ -20,7 +23,6 @@ if($prepare->fetch()){
         'fullname'  => $fetchedFullname,
         'status'    => $fetchedStatus
     );
-    $prepare->close();
     echo json_encode($arr);
 } else {
     $arr = array(
@@ -29,3 +31,4 @@ if($prepare->fetch()){
     );
     echo json_encode($arr);
 }
+$prepare->close();

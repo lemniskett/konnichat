@@ -12,9 +12,13 @@ function reportResult($whatToReport) {
     }
 }
 
+if(! $username = $_SESSION['username']) {
+    echo json_encode(array('code' => 403, 'status' => 'Forbidden'));
+    die();
+}
+
 switch($_POST['type']) {
     case 'status':
-        $username   = $_SESSION['username'];
         $status     = $_POST['status'];
         $prepare    =  $mysql->prepare(
             'UPDATE tbUsername
@@ -26,7 +30,6 @@ switch($_POST['type']) {
         $prepare->close();
     break;
     case 'fullname':
-        $username       = $_SESSION['username'];
         $newFullname    = $_POST['fullname'];
         $prepare        = $mysql->prepare(
             'UPDATE tbUsername
@@ -38,7 +41,6 @@ switch($_POST['type']) {
         $prepare->close();
     break;
     case 'password':
-        $username       = $_SESSION['username'];
         $currentPass    = sha1($_POST['current-pass']);
         $newPass        = sha1($_POST['new-pass']);
         $prepare        = $mysql->prepare(

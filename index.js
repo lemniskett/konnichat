@@ -89,7 +89,7 @@ class Chats {
 class User {
     async update(what) {
         const update = document.getElementById(`input-${what}`).value;
-        document.getElementById(`profile-${what}`).innerHTML = update;
+        //document.getElementById(`profile-${what}`).innerHTML = update;
         console.log(`Update ${what} to ${update}`);
         await http.post('functions/user_update.php', `type=${what}&${what}=${update}`)
     }

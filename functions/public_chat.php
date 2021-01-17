@@ -1,5 +1,11 @@
 <?php
+session_start();
 include 'koneksi.php';
+
+if(! $username = $_SESSION['username']) {
+    echo json_encode(array('code' => 403, 'status' => 'Forbidden'));
+    die();
+}
 
 $prepare    = $mysql->prepare(
     'SELECT tbPublicChat.id,tbPublicChat.username_username,
