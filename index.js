@@ -44,7 +44,7 @@ class Chats {
         let isWhom = '';
         let content = '';
         let together = '';
-        cooked.forEach((item) => {
+        cooked.content.forEach((item) => {
             const fullname = item.fullname;
             const username = item.username;
             const message = item.message.replace(/\n/g, '<br/>');
@@ -154,7 +154,7 @@ let publicChatHash      = '';
         newPass = document.getElementById('input-new-pass').value
         const raw = await http.post('functions/user_update.php', `type=password&current-pass=${currentPass}&new-pass=${newPass}`);
         const cooked = JSON.parse(raw);
-        alert(cooked.return);
+        alert(cooked.status);
         changePass('close');
     });
     document.getElementById('chat-form').addEventListener('submit', async (e) => {
@@ -162,10 +162,10 @@ let publicChatHash      = '';
         const message = document.getElementById('chat-input');
         const raw = await http.post('functions/public_chat_update.php', `message=${message.value}`);
         const cooked = JSON.parse(raw);
-        if (cooked.return == 'success'){
+        if (cooked.code == '200'){
             message.value = '';
         }
-        console.log(cooked.return);
+        console.log(cooked.status);
     });
     document.getElementById("chat-input").addEventListener("keypress", (key)=> {
         if(!key.shiftKey && key.code == 'Enter'){

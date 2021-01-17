@@ -8,21 +8,32 @@ $prepare    = $mysql->prepare(
     LEFT JOIN tbUsername 
     ON tbPublicChat.username_username = tbUsername.username'
 );
-
-$prepare->execute();
+$success = $prepare->execute();
 $prepare->bind_result($fetchedId, $fetchedUsername, $fetchedFullname, $fetchedMessage);
 
-$data = array();
+$content = array();
 while($prepare->fetch()){
     $message    = array(
         'id'        => $fetchedId,
         'username'  => $fetchedUsername,
-        'fullname'   => $fetchedFullname,
-        'message'    => $fetchedMessage
+        'fullname'  => $fetchedFullname,
+        'message'   => $fetchedMessage
     );
-    array_push($data, $message);
+    array_push($content, $message);
 }
-$prepare->close();
+if($success){
+    $data = array(
+        'code'      => 200,
+        'status'    => 'OK',
+        'content'   => $content
+    );
+} else {
+    $data = array(
+        'code'      => 500,
+        'status'    => 'Internal Server Error',
+    );
+}
+
 $jsonData   = json_encode($data);
 if($_POST['crc32'] == 'yes'){
     echo crc32($jsonData);

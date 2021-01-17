@@ -4,10 +4,10 @@ include 'koneksi.php';
 
 function reportResult($whatToReport) {
     if($whatToReport){
-        echo json_encode(array('return' => 'success'));
+        echo json_encode(array('code' => 200, 'status' => 'OK'));
         return TRUE;
     } else {
-        echo json_encode(array('return' => 'failed'));
+        echo json_encode(array('code' => 500, 'status' => 'Internal Server Error'));
         return FALSE;
     }
 }
@@ -16,7 +16,7 @@ $username   = $_SESSION['username'];
 $message    = $_POST['message'];
 
 if(trim($message) == ''){
-    reportResult(FALSE);
+    echo json_encode(array('code' => 400, 'status' => 'Bad Request'));
     die();
 }
 
