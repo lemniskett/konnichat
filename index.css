@@ -1,0 +1,224 @@
+#home-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+}
+
+#contacts {
+    background-color: var(--bg);
+    backdrop-filter: blur(16px);
+    width: 30%;
+    height: 100%;
+    transition: 250ms;
+}
+
+#chats {
+    width: 70%;
+    height: 100%;
+    background-color: var(--bgsolid);
+    z-index: 1;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: 250ms;
+}
+
+#header {
+    width: 100%;
+    height: 64px;
+    position: relative;
+}
+
+#profile {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+}
+
+#profile-picture {
+    width: 36px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.contact-picture {
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.contact-name {
+    font-size: 11pt;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contact-message {
+    font-size: 11pt;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--trfg);
+}
+
+.contact-profile {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 64px auto;
+    height: 64px;
+}
+
+.contact-profile:hover {
+    background-color: var(--hover);
+}
+
+#chats .empty {
+    display: none;
+}
+
+#password-container {
+    display: flex;    
+    visibility: visible;
+    opacity: 1;
+    transition: 250ms;
+}
+
+#password-container.hide {
+    visibility: hidden;
+    opacity: 0;
+}
+
+#button-back {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+
+#chats-title {
+    position: absolute;
+    font-size: 12pt;
+    top: 6px;
+    text-transform: capitalize;
+}
+
+.public-chat {
+    width: 100%;
+    height: calc(100% - 60px);
+    margin-top: 68px;
+    box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.1) inset;
+    background-color: var(--altbgsolid);
+    transition: 250ms;
+    position: relative;
+}
+
+#public-chat-container {
+    height: calc(100% - 76px);
+    overflow-y: scroll;
+}
+
+#chat-form {
+    grid-template-columns: calc(100% - 84px) 70px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 8px;
+    width: 100%;
+}
+
+#chat-input {
+    margin-right: 8px;
+}
+
+#chat-submit {
+    width: 100%;
+}
+
+.chats-received, .chats-sent {
+    padding: 24px 24px 0 24px;
+}
+
+.chats-received .chats-contact .chats-name, .chats-sent .chats-contact .chats-name {
+    display: block;
+    width: 100%;
+    font-size: 11pt;
+    color: var(--accent);
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.chats-sent .chats-contact .chats-name {
+    text-align: end;
+    margin-left: 0;
+    width: calc(100% - 14px);
+}
+
+.chats-received .chats-contact .chats-picture, .chats-sent .chats-contact .chats-picture {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chats-sent .chats-contact .chats-picture {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.chats-received .chats-message , .chats-sent .chats-message{
+    margin-top: 8px;
+    display: block;
+    width: 100%; 
+    font-size: 11pt;   
+    color: var(--fg);
+    overflow-wrap: break-word;
+}
+
+.chats-sent .chats-message {
+    text-align: end;
+}
+
+.chats-received .chats-contact {
+    grid-template-columns: 30px auto;
+}
+
+.chats-sent .chats-contact {
+    grid-template-columns: auto 30px;
+}
+
+.chats-sent.together, .chats-received.together {
+    padding: 0 24px;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+}
+
+@media(max-width: 768px){
+    #contacts {
+        width: 100%;
+    }
+
+    #chats {
+        top: 100%;
+        position: fixed;
+        width: 100%;
+        transition: ease-in 250ms;
+        opacity: 0;
+    }
+
+    #chats.selected {
+        top: 0;
+        opacity: 1;
+        transition: ease-out 250ms;
+    }
+
+    #home-container {
+        display: block;
+    }
+}
