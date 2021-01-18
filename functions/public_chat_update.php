@@ -26,10 +26,11 @@ if(trim($message) == ''){
 
 $prepare    = $mysql->prepare(
     'INSERT INTO 
-    tbPublicChat(username_username, message)
-    VALUES(?, ?)'
+    tbPublicChat(username_username, message, type)
+    VALUES(?, ?, ?)'
 );
 
-$prepare->bind_param('ss', $username, $message);
+$type       = 'text';
+$prepare->bind_param('sss', $username, $message, $type);
 reportResult($prepare->execute());
 $prepare->close();

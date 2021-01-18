@@ -9,13 +9,13 @@ if(! $username = $_SESSION['username']) {
 
 $prepare    = $mysql->prepare(
     'SELECT tbPublicChat.id,tbPublicChat.username_username,
-    tbUsername.fullname,tbPublicChat.message 
+    tbUsername.fullname,tbPublicChat.message,tbPublicChat.type 
     FROM tbPublicChat 
     LEFT JOIN tbUsername 
     ON tbPublicChat.username_username = tbUsername.username'
 );
 $success = $prepare->execute();
-$prepare->bind_result($fetchedId, $fetchedUsername, $fetchedFullname, $fetchedMessage);
+$prepare->bind_result($fetchedId, $fetchedUsername, $fetchedFullname, $fetchedMessage, $fetchedType);
 
 $content = array();
 while($prepare->fetch()){
@@ -23,7 +23,8 @@ while($prepare->fetch()){
         'id'        => $fetchedId,
         'username'  => $fetchedUsername,
         'fullname'  => $fetchedFullname,
-        'message'   => $fetchedMessage
+        'message'   => $fetchedMessage,
+        'type'      => $fetchedType
     );
     array_push($content, $message);
 }

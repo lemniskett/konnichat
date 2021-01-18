@@ -74,11 +74,11 @@ if(substr($message, 0, 1) == '!') {
         $prepare->close();
         $prepare    = $mysql->prepare(
             'INSERT INTO 
-            tbGroupChatMessage(id_groupchat, username_username, message)
-            VALUES(?, ?, ?)'
+            tbGroupChatMessage(id_groupchat, username_username, message, type)
+            VALUES(?, ?, ?, ?)'
         );
-        
-        $prepare->bind_param('sss', $groupChat, $username, $message);
+        $type   = 'text';
+        $prepare->bind_param('ssss', $groupChat, $username, $message, $type);
         reportResult($prepare->execute());
         $prepare->close();
     } else {

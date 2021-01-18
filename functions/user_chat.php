@@ -35,6 +35,7 @@ while($groupChat = $rawGroupChat->fetch_assoc()) {
         tbGroupChatMessage.username_username,
         tbUsername.fullname,
         tbGroupChatMessage.message,
+        tbGroupChatMessage.type,
         tbGroupChatMessage.sent_on
         FROM tbGroupChatMessage LEFT JOIN tbUsername
         ON tbGroupChatMessage.username_username = tbUsername.username
@@ -47,6 +48,7 @@ while($groupChat = $rawGroupChat->fetch_assoc()) {
             'username'  => $message['username_username'],
             'fullname'  => $message['fullname'],
             'message'   => $message['message'],
+            'type'      => $message['type'],
             'sentOn'    => $message['sent_on']
         );
         array_push($messageContent, $messageArr);
