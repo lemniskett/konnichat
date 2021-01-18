@@ -41,21 +41,22 @@ switch($_POST['type']) {
         $prepare->close();
     break;
     case 'password':
-        $currentPass    = sha1($_POST['current-pass']);
-        $newPass        = sha1($_POST['new-pass']);
+        $currentPass    = sha1($_POST['currentpass']);
+        $newPass        = sha1($_POST['newpass']);
         $prepare        = $mysql->prepare(
             'SELECT password FROM tbUsername
             WHERE username=?'
         );
         
         if($currentPass == $newPass) {
-            reportResult(FALSE);
+            echo json_encode(array('code' => 400, 'status' => 'Bad Request'));
             return FALSE;
         }
 
         $prepare->bind_param('s', $username);
         $prepare->execute();
         $prepare->bind_result($fetchedPassword);
+        error_reporting(E_ALL ^ E_WARNING); 
         if($prepare->fetch()){
             $prepare->close();
             if($currentPass == $fetchedPassword){
@@ -73,7 +74,7 @@ switch($_POST['type']) {
                 return FALSE;
             }
         } else {
-            reportResult(FALSE);
+            echo json_encode(array('code' => 400, 'status' => 'Bad Request'));
             $prepare->close();
             return FALSE;
         }

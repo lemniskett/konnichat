@@ -24,23 +24,15 @@ if( ! $_SESSION['loggedin'] ) {
             <div id="header" class="hc-center-everything">
                 <h2>Konnichat!</h2>
                 <div id="profile" onclick="chats.show('profile')">
-                    <img id="profile-picture" src="https://github.com/lemniskett/host/raw/master/blank-pp.png">
+                    <img id="profile-picture" class="no-select" src="https://github.com/lemniskett/host/raw/master/blank-pp.png">
+                </div>
+                <button id="menu" onclick="toggleMenu()" class="no-select">...</button>
+                <div id="menu-popup" class="hidden">
+                    <a>Chat someone.</a>
+                    <a onclick="dialog.toggle('group-chat-form'); toggleMenu()">Create a group chat.</a>
                 </div>
             </div>
-            <!--
-            <div id="profile" class="contact-profile" onclick="chats.show('profile')">
-                <div class="hc-center-everything no-select">
-                    <img class="contact-picture" src="https://github.com/lemniskett/host/raw/master/blank-pp.png">
-                </div>
-                <div class="hc-margin-left name-container">
-                    <div class="hc-grid-col-1" style="height: fit-content">
-                        <span class="contact-name" id="profile-fullname"></span>
-                        <span class="contact-message" id="profile-status"></span>
-                    </div>
-                </div>
-            </div>
-            -->
-            <div id="public-chat" class="contact-profile" onclick="chats.show('public-chat'); chats.triggerPublicMessages()">
+            <div id="public-chat" class="contact-profile" onclick="chats.show('public-chat'); chats.triggerPublicMessages(); chats.selectContact('public-chat');">
                 <div class="hc-center-everything no-select">
                     <img class="contact-picture" src="https://github.com/lemniskett/host/raw/master/blank-pp.png">
                 </div>
@@ -51,6 +43,7 @@ if( ! $_SESSION['loggedin'] ) {
                     </div>
                 </div>
             </div>
+            <div id="user-chat"></div>
         </div>
         <div id="chats" class="hc-center-everything">
             <div class="empty">
@@ -68,12 +61,13 @@ if( ! $_SESSION['loggedin'] ) {
                         Status
                         <input id="input-status" class="higher hc-margin-top" name="hc-status" onchange="user.update('status')" autocomplete="off">
                     </label>
-                    <button onclick="changePass('open')" class="hc-margin">Update Password</button>
+                    <button onclick="dialog.toggle('password-form')" class="hc-margin">Update Password</button>
                     <a href="functions/logout.php" style="display: inherit;"><button class="hc-margin warn" onclick="">Log Out</button></a>
                 </div>
             </div>
             <div class="public-chat">
-                <div id="public-chat-container"></div>
+                <div id="public-chat-container" class="hidden"></div>
+                <div id="user-chat-container" class="hidden"></div>
             </div>
             <form class="hc-grid-col-2" id="chat-form">
                 <textarea id="chat-input" autocomplete="off"></textarea>
@@ -83,8 +77,8 @@ if( ! $_SESSION['loggedin'] ) {
             <h3 id="chats-title"></h3>
         </div>
     </div>
-    <div id="password-container" class="hide">
-        <form class="hc-grid-col-1 hc-box higher" id="password-form">
+    <div id="dialog-container" class="hidden">
+        <form class="hc-grid-col-1 hc-box higher dialog-form hidden" id="password-form">
             <h3 class="hc-center-text">Change your password.</h3>
             <label class="hc-margin">
                 Current password
@@ -95,7 +89,16 @@ if( ! $_SESSION['loggedin'] ) {
                 <input type="password" id="input-new-pass" class="hc-margin-top evenhigher">
             </label>
             <button type="submit" class="hc-margin">Change password</button>
-            <button type="button" onclick="changePass('close')" class="hc-margin warn">Cancel</button>
+            <button type="button" onclick="dialog.toggle('password-form')" class="hc-margin warn">Cancel</button>
+        </form>
+        <form class="hc-grid-col-1 hc-box higher dialog-form hidden" id="group-chat-form">
+            <h3 class="hc-center-text">Create new group chat</h3>
+            <label class="hc-margin">
+                Group chat name
+                <input type="text" id="input-group-chat-name" class="hc-margin-top evenhigher">
+            </label>
+            <button type="submit" class="hc-margin">Create</button>
+            <button type="button" onclick="dialog.toggle('group-chat-form')" class="hc-margin warn">Cancel</button>
         </form>
     </div>
     <script src="index.js"></script>

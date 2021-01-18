@@ -1,4 +1,7 @@
 class Chats {
+    currentContactSelected = '';
+    currentSelected = '';
+
     show(classname) {
         const id = document.getElementById('chats');
         classes.forEach((item) => {
@@ -27,6 +30,29 @@ class Chats {
         }
 
         selected.style.display = 'block';
+    }
+
+    selectContact(contact) {
+        this.show('public-chat');
+        const chatTitle = document.getElementById('chats-title');
+        const publicChatContainer = document.getElementById('public-chat-container');
+        const userChatContainer = document.getElementById('user-chat-container');
+        if(contact == 'public-chat') {
+            publicChatContainer.classList.remove('hidden');
+            userChatContainer.classList.add('hidden');
+            this.currentSelected = 'public'
+            return 0;
+        }
+        publicChatContainer.classList.add('hidden');
+        userChatContainer.classList.remove('hidden');
+        if(this.currentContactSelected){
+            document.getElementById(this.currentContactSelected).style.display = 'none';
+        }
+        document.getElementById(contact).style.display = 'block';
+        this.currentContactSelected = contact;
+        this.currentSelected = contact.slice(6);
+        chatTitle.innerHTML = document.getElementById(`user-chat-${this.currentSelected}`).getAttribute('data-groupchatname');
+        userChatContainer.scrollTo(0, 999999);
     }
 
     async fetchPublicMessages() {
@@ -61,7 +87,7 @@ class Chats {
                 <div class="hc-grid-col-2 chats-contact">
                     <img class="chats-picture no-select" src="https://github.com/lemniskett/host/raw/master/blank-pp.png">
                     <span class="chats-name">${fullname}</span>
-                </div>`
+                </div>`;
                 together = '';
             }
             container.innerHTML += `
@@ -74,8 +100,81 @@ class Chats {
         container.scrollTo(0, 999999);
     }
 
+    async fetchUserMessages() {
+        const hash = await http.post('functions/user_chat.php', 'crc32=yes');
+        if(hash == userChatHash){
+            return 0;
+        } else {
+            userChatHash = hash;
+        }
+        const raw = await http.get('functions/user_chat.php');
+        const cooked = await JSON.parse(raw);
+        const contactList = document.getElementById('user-chat');
+        const userChatContainer = document.getElementById('user-chat-container');
+        contactList.innerHTML = '';
+        userChatContainer.innerHTML = '';
+        let chatContent = '';
+        cooked.content.forEach((item) => {
+            let lastMessage = '';
+            if(item.messages.length > 0){
+                const length = item.messages.length - 1
+                lastMessage = `${item.messages[length].fullname}: ${item.messages[length].message}`;
+            } else {
+                lastMessage = 'No chats yet :(';
+            }
+            contactList.innerHTML +=
+            `<div id="user-chat-${item.groupChatID}" class="contact-profile" data-groupchatname="${item.groupChatName}" onclick="chats.selectContact('chats-${item.groupChatID}')">
+                <div class="hc-center-everything no-select">
+                    <img class="contact-picture" src="https://github.com/lemniskett/host/raw/master/blank-pp.png">
+                </div>
+                <div class="hc-margin-left name-container">
+                    <div class="hc-grid-col-1" style="height: fit-content">
+                        <span class="contact-name">${item.groupChatName}</span>
+                        <span class="contact-message">${lastMessage}</span>
+                    </div>
+                </div>
+            </div>`;
+            let isWhom = '';
+            let content = '';
+            let together = '';
+            let previousSender = '';
+            if(this.currentSelected == item.groupChatID) {
+                chatContent += `<div id="chats-${item.groupChatID}" style="display: block;">`;
+            } else {
+                chatContent += `<div id="chats-${item.groupChatID}" style="display: none;">`;
+            }
+            item.messages.forEach((message) => {
+                if(myUsername == message.username) {
+                    isWhom = 'sent';
+                } else {
+                    isWhom = 'received';
+                }
+                if(previousSender == message.username) {
+                    content = '';
+                    together = ' together';
+                } else {
+                    content = `
+                    <div class="hc-grid-col-2 chats-contact">
+                        <img class="chats-picture no-select" src="https://github.com/lemniskett/host/raw/master/blank-pp.png">
+                        <span class="chats-name">${message.fullname}</span>
+                    </div>`;
+                    together = '';
+                }
+                chatContent += `
+                <div class="chats-${isWhom}${together}"">
+                    ${content}
+                    <span class="chats-message">${message.message}</span>
+                </div>`
+                previousSender = message.username;
+            });
+            chatContent += `</div>`;
+        });
+        userChatContainer.innerHTML = chatContent;
+    }
+
     async triggerPublicMessages() {
         if (! publicChatTriggered){
+            this.fetchPublicMessages()
             setInterval(() => {
                 this.fetchPublicMessages();
             }, 1000); 
@@ -121,24 +220,28 @@ class Http {
     }
 }
 
-async function changePass(state) {
-    const passContainer = document.getElementById('password-container')
-    switch(state) {
-        case 'open':
-            passContainer.classList.remove('hide');
-            break;
-        case 'close':
-            passContainer.classList.add('hide');
-            break;
+class Dialog {
+    toggle(form) {
+         const dialogContainer = document.getElementById('dialog-container');
+         const formContainer = document.getElementById(form);
+         dialogContainer.classList.toggle('hidden');
+         formContainer.classList.toggle('hidden');
     }
+}
+
+function toggleMenu() {
+    const menuPopUp = document.getElementById('menu-popup');
+    menuPopUp.classList.toggle('hidden');
 }
 
 const http              = new Http();
 const user              = new User();
 const chats             = new Chats();
+const dialog            = new Dialog();
 const classes           = ['empty', 'profile', 'public-chat'];
 let publicChatTriggered = false;
 let publicChatHash      = '';
+let userChatHash        = '';
 
 (async () => {
     chats.show('empty');
@@ -150,26 +253,43 @@ let publicChatHash      = '';
     document.getElementById('input-fullname').value = data.fullname;
     document.getElementById('password-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        currentPass = document.getElementById('input-current-pass').value
-        newPass = document.getElementById('input-new-pass').value
-        const raw = await http.post('functions/user_update.php', `type=password&current-pass=${currentPass}&new-pass=${newPass}`);
+        const currentPass = document.getElementById('input-current-pass').value
+        const newPass = document.getElementById('input-new-pass').value
+        const raw = await http.post('functions/user_update.php', `type=password&currentpass=${currentPass}&newpass=${newPass}`);
         const cooked = JSON.parse(raw);
         alert(cooked.status);
-        changePass('close');
+        dialog.toggle('password-form');
+    });
+    document.getElementById('group-chat-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const groupChatName = document.getElementById('input-group-chat-name').value        
+        const raw = await http.post('functions/group_chat_add.php', `groupchatname=${groupChatName}`);
+        const cooked = JSON.parse(raw);
+        alert(cooked.status);
+        dialog.toggle('group-chat-form');
     });
     document.getElementById('chat-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const message = document.getElementById('chat-input');
-        const raw = await http.post('functions/public_chat_update.php', `message=${message.value}`);
+        const trimmedMessage = message.value.trim();
+        let raw = '';
+        if(chats.currentSelected == 'public'){
+            raw = await http.post('functions/public_chat_update.php', `message=${trimmedMessage}`);
+        } else {
+            raw = await http.post('functions/user_chat_update.php', `message=${trimmedMessage}&groupchat=${chats.currentSelected}`);
+        }
         const cooked = JSON.parse(raw);
-        if (cooked.code == '200'){
+        if (cooked.code == 200){
             message.value = '';
         }
         console.log(cooked.status);
     });
     document.getElementById("chat-input").addEventListener("keypress", (key)=> {
         if(!key.shiftKey && key.code == 'Enter'){
-            key.target.form.dispatchEvent(new Event("submit", {cancelable: true}));
+            key.target.form.dispatchEvent(new Event("submit"));
         }
     });
+    setInterval(() => {
+        chats.fetchUserMessages();
+    }, 1000);
 })();
