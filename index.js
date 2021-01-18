@@ -170,6 +170,7 @@ class Chats {
             chatContent += `</div>`;
         });
         userChatContainer.innerHTML = chatContent;
+        userChatContainer.scrollTo(0, 999999);
     }
 
     async triggerPublicMessages() {
