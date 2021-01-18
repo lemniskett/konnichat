@@ -41,7 +41,7 @@ if($_GET['from'] == 'register') {
         <div class="hc-center-everything"></div>
         <div class="hc-center-everything">
             <div class="hc-box" id="loginform-container">
-                <h2 class="hc-center-text">Login page.</h2>
+                <h2 class="hc-center-text">Login to continue.</h2>
                 <form class="hc-grid-col-1" method="POST" action="./functions/verify_login.php">
                     <input class="hc-center-text hc-margin" type="text" name="hc-username" placeholder="Username">
                     <input class="hc-center-text hc-margin" type="password" name="hc-password" placeholder="Password">

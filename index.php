@@ -28,7 +28,8 @@ if( ! $_SESSION['loggedin'] ) {
                 </div>
                 <button id="menu" onclick="toggleMenu()" class="no-select">...</button>
                 <div id="menu-popup" class="hidden">
-                    <a onclick="dialog.toggle('group-chat-form'); toggleMenu()">Create a group chat.</a>
+                    <a onclick="dialog.toggle('group-chat-form'); toggleMenu()">Create a group chat</a>
+                    <a onclick="switchTheme(); toggleMenu()">Change theme</a>
                 </div>
             </div>
             <div id="public-chat" class="contact-profile" onclick="chats.show('public-chat'); chats.triggerPublicMessages(); chats.selectContact('public-chat');">

@@ -27,7 +27,7 @@ body, html {
     height: 100vh;
 }
 
-input, textarea, button, select, a, .contact-profile {
+input, textarea, button, select, img, a, .contact-profile {
     -webkit-tap-highlight-color: transparent;
 }
 

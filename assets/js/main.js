@@ -1,11 +1,10 @@
 function switchTheme() {
-    const style = document.documentElement.style;
-    switch(window.sessionStorage.theme) {
-        case '1':
-            window.sessionStorage.theme = changeTheme(0);
+    switch(window.localStorage.theme) {
+        case 'light':
+            window.localStorage.theme = changeTheme('dark');
             break;
-        case '0':
-            window.sessionStorage.theme = changeTheme(1);
+        case 'dark':
+            window.localStorage.theme = changeTheme('light');
             break;
         default:
             return 255;
@@ -15,8 +14,7 @@ function switchTheme() {
 function changeTheme(theme) {
     const style = document.documentElement.style;
     switch(theme) {
-        case 1:
-            // 1 means light
+        case 'light':
             style.setProperty('--bg', 'rgba(255, 255, 255, 0.9)');
             style.setProperty('--altbg', 'rgba(255, 255, 255, 0.9)');
             style.setProperty('--altbg2', 'rgba(255, 255, 255, 0.9)');
@@ -31,9 +29,8 @@ function changeTheme(theme) {
             style.setProperty('--altaccent', '#00838f');
             style.setProperty('--fg', 'rgba(0, 0, 0, 1)');
             style.setProperty('--trfg', 'rgba(0, 0, 0, 0.6)');
-            return 1;
-        case 0:
-            // 0 means dark
+            return 'light';
+        case 'dark':
             style.setProperty('--bg', 'rgba(18, 18, 18, 0.9)');
             style.setProperty('--altbg', 'rgba(30, 30, 30, 0.9)');
             style.setProperty('--altbg2', 'rgba(42, 42, 42, 0.9)');
@@ -48,9 +45,14 @@ function changeTheme(theme) {
             style.setProperty('--altaccent', '#b2ebf2');
             style.setProperty('--fg', 'rgba(245, 245, 245, 1)');
             style.setProperty('--trfg', 'rgba(245, 245, 245, 0.6)');
-            return 0;
+            return 'dark';
         default:
             return 255;
     }
 }
-window.sessionStorage.theme = changeTheme(1);
+
+if(! window.localStorage.theme) {
+    window.localStorage.theme = changeTheme('light');
+} else {
+    changeTheme(window.localStorage.theme);
+}
