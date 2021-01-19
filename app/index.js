@@ -26,6 +26,8 @@ class Chats {
         if(classname == 'public-chat') {
             chatForm.style.display = 'grid';
         } else {
+            clearInterval(this.triggerPublicMessages);
+            publicChatTriggered = false;
             chatForm.style.display = 'none';
         }
 
