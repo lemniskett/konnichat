@@ -54,6 +54,8 @@ class Chats {
         manualButton.style.display = 'block';
         this.currentContactSelected = contact;
         this.currentSelected = contact.slice(6);
+        clearInterval(this.triggerPublicMessages);
+        publicChatTriggered = false;
         chatTitle.innerHTML = document.getElementById(`user-chat-${this.currentSelected}`).getAttribute('data-groupchatname');
         userChatContainer.scrollTo(0, 999999);
     }
@@ -179,7 +181,7 @@ class Chats {
     async triggerPublicMessages() {
         if (! publicChatTriggered){
             this.fetchPublicMessages()
-            setInterval(() => {
+            this.publicMessageLoop = setInterval(() => {
                 this.fetchPublicMessages();
             }, 2500); 
         } else {
