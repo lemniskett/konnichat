@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+:root {
+    font-size: 14px;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: var(--traccent);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent); 
+}
+
+body, html {
+    font-size: 12px;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+input, textarea, button, select, img, a, .contact-profile {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+body {
+    background: url("https://github.com/lemniskett/host/raw/master/bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+
+
+* {
+    color: var(--fg);
+    font-family: "Inter", sans-serif;
+}
+
+.hc-occupy-space {
+    width: 100%;
+    height: 100%;
+}
+
+.hc-link {
+    color: var(--accent);
+    padding: 0.4ch;
+    transition: 250ms;
+}
+
+.hc-link:hover {
+    background-color: var(--traccent);
+    border-radius: 0.6ch;
+}
+
+.hc-center-text {
+    text-align: center;
+}
+
+.hc-center-everything {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hc-margin {
+    margin: 4px;
+}
+
+.hc-margin-top {
+    margin-top: 8px;
+}
+
+.hc-margin-left {
+    margin-left: 8px;
+}
+
+.hc-grid-col-1 {
+    display: grid;
+}
+
+.hc-grid-col-2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.hc-grid-colspan-2 {
+    grid-column: span 2;
+}
+
+.hc-box {
+    border-radius: 4px;
+    background-color: var(--bg);
+    padding: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(16px);
+    transition: 250ms;
+}
+
+textarea, input, button {
+    background-color: var(--bg);
+    padding: 10px;
+    border-radius: 4px;
+    outline: none;
+    border: 2px solid transparent;
+    transition: 250ms;
+}
+
+input, textarea {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input:hover, textarea:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: 250ms;
+}
+
+input:focus, textarea:focus {
+    border: 2px solid var(--accent);
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    background-color: var(--accent);
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 2px 4px var(--traccent);
+    color: var(--bgsolid);
+}
+
+button:hover {
+    background-color: var(--altaccent);
+    box-shadow: 0 4px 8px var(--traccent);
+}
+
+button.warn {
+    background-color: var(--warn);
+    box-shadow: 0 2px 4px var(--trwarn);
+}
+
+button.warn:hover {
+    background-color: var(--altwarn);
+    box-shadow: 0 4px 8px var(--trwarn);
+}
+
+.hc-small-font {
+    font-size: 8pt;
+}
+
+.hc-display-block {
+    display: block;
+}
+
+.higher {
+    background-color: var(--altbg);
+}
+
+.evenhigher {
+    background-color: var(--altbg2);
+}
+
+.hc-good-alert {
+    background-color: var(--trgood);
+    text-align: center;
+    padding: 12px;
+    margin: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--good);
+    color: var(--good);
+    font-size: 10pt;
+}
+
+.hc-bad-alert {
+    background-color: var(--trwarn);
+    text-align: center;
+    padding: 12px;
+    margin: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--warn);
+    color: var(--warn);
+    font-size: 10pt;
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+label {
+    font-size: 14px;
+}
+
+label input {
+    width: calc(100% - 24px);
+}
