@@ -181,7 +181,7 @@ class Chats {
             this.fetchPublicMessages()
             setInterval(() => {
                 this.fetchPublicMessages();
-            }, 1000); 
+            }, 2500); 
         } else {
             return 0;
         }
@@ -320,5 +320,5 @@ let userChatHash        = '';
       }, false);
     setInterval(() => {
         chats.fetchUserMessages();
-    }, 1000);
+    }, 2500);
 })();
