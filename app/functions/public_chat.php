@@ -12,7 +12,8 @@ $prepare    = $mysql->prepare(
     tbUsername.fullname,tbPublicChat.message,tbPublicChat.type 
     FROM tbPublicChat 
     LEFT JOIN tbUsername 
-    ON tbPublicChat.username_username = tbUsername.username'
+    ON tbPublicChat.username_username = tbUsername.username
+    ORDER BY tbPublicChat.id ASC'
 );
 $success = $prepare->execute();
 $prepare->bind_result($fetchedId, $fetchedUsername, $fetchedFullname, $fetchedMessage, $fetchedType);

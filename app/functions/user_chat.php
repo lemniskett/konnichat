@@ -39,7 +39,8 @@ while($groupChat = $rawGroupChat->fetch_assoc()) {
         tbGroupChatMessage.sent_on
         FROM tbGroupChatMessage LEFT JOIN tbUsername
         ON tbGroupChatMessage.username_username = tbUsername.username
-        WHERE tbGroupChatMessage.id_groupchat='$groupChatID'";
+        WHERE tbGroupChatMessage.id_groupchat='$groupChatID'
+        ORDER BY tbGroupChatMessage.id ASC";
     $rawMessage     = $mysql->query($query);
     $messageContent = array();
     while($message  = $rawMessage->fetch_assoc()) {
