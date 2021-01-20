@@ -2,6 +2,6 @@
     "name": "lemniskett/konnichat",
     "description": "simple open-source chat app",
     "require": {
-        "php" : ">=7.4"
+        "php" : "7.4.14"
     }
 }
