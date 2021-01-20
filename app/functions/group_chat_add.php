@@ -45,12 +45,10 @@ $prepare->close();
 if ($success) {
     $prepare    = $mysql->prepare(
         'INSERT INTO 
-        tbGroupChatOwnership (id_groupchat, username_username, privilege, isgroupchat)
-        VALUES (?, ?, ?, ?)'
+        tbGroupChatOwnership (id_groupchat, username_username, privilege) VALUES (?, ?, ?)'
     );
-    $privilege      = 2;
-    $isGroupChat    = 1;
-    $prepare->bind_param('ssii', $chatID, $username, $privilege, $isGroupChat);
+    $privilege  = 2;
+    $prepare->bind_param('ssi', $chatID, $username, $privilege);
     reportResult($prepare->execute());
 } else {
     reportResult(FALSE);
